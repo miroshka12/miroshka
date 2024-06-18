@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finxly Калькулятор</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('YOUR_IMAGE_URL') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+        .calculator {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .calculator-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .calculator-title img {
+            width: 100px;
+            height: auto;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .calculator-display {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 2em;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .calculator-key {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.5em;
+            padding: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .calculator-key:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .calculator-key.operation {
+            background: rgba(255, 165, 0, 0.8);
+            color: #333;
+        }
+        .calculator-key.operation:hover {
+            background: rgba(255, 140, 0, 0.8);
+        }
+        .calculator-key.equal {
+            grid-column: span 2;
+            background: rgba(60, 179, 113, 0.8);
+            color: #fff;
+        }
+        .calculator-key.equal:hover {
+            background: rgba(46, 139, 87, 0.8);
+        }
+        .calculator-key.clear {
+            grid-column: span 2;
+            background: rgba(220, 20, 60, 0.8);
+            color: #fff;
+        }
+        .calculator-key.clear:hover {
+            background: rgba(178, 34, 34, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="calculator-title">
+        <img src="https://media.discordapp.net/attachments/1047587548752515113/1252677728511987732/seidou_takizawa.jpg?ex=6673168c&is=6671c50c&hm=5c1b012bea463341d91059cb645aac8161d8face77b87a38655029a19c14a698&=&format=webp" alt="Kaneki Ken">
+        Finxly Калькулятор
+    </div>
+    <div class="calculator-display" id="display">0</div>
+    <div class="calculator-keys">
+        <button class="calculator-key" onclick="appendNumber('1')">1</button>
+        <button class="calculator-key" onclick="appendNumber('2')">2</button>
+        <button class="calculator-key" onclick="appendNumber('3')">3</button>
+        <button class="calculator-key operation" onclick="chooseOperation('+')">+</button>
+
+        <button class="calculator-key" onclick="appendNumber('4')">4</button>
+        <button class="calculator-key" onclick="appendNumber('5')">5</button>
+        <button class="calculator-key" onclick="appendNumber('6')">6</button>
+        <button class="calculator-key operation" onclick="chooseOperation('-')">-</button>
+
+        <button class="calculator-key" onclick="appendNumber('7')">7</button>
+        <button class="calculator-key" onclick="appendNumber('8')">8</button>
+        <button class="calculator-key" onclick="appendNumber('9')">9</button>
+        <button class="calculator-key operation" onclick="chooseOperation('*')">×</button>
+
+        <button class="calculator-key" onclick="appendNumber('0')">0</button>
+        <button class="calculator-key" onclick="appendNumber('.')">.</button>
+        <button class="calculator-key equal" onclick="calculate()">=</button>
+        <button class="calculator-key operation" onclick="chooseOperation('/')">÷</button>
+
+        <button class="calculator-key clear" onclick="clearDisplay()">C</button>
+    </div>
+</div>
+
+<script>
+    let display = document.getElementById('display');
+    let firstOperand = '';
+    let secondOperand = '';
+    let currentOperation = null;
+
+    function appendNumber(number) {
+        if (currentOperation === null) {
+            firstOperand += number;
+            display.textContent = firstOperand;
+        } else {
+            secondOperand += number;
+            display.textContent = secondOperand;
+        }
+    }
+
+    function chooseOperation(operation) {
+        if (firstOperand === '') return;
+        if (secondOperand !== '') {
+            calculate();
+        }
+        currentOperation = operation;
+    }
+
+    function calculate() {
+        let result;
+        const num1 = parseFloat(firstOperand);
+        const num2 = parseFloat(secondOperand);
+        if (isNaN(num1) || isNaN(num2)) return;
+        switch (currentOperation) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                result = num1 / num2;
+                break;
+            default:
+                return;
+        }
+        display.textContent = result;
+        firstOperand = result;
+        secondOperand = '';
+        currentOperation = null;
+    }
+
+    function clearDisplay() {
+        firstOperand = '';
+        secondOperand = '';
+        currentOperation = null;
+        display.textContent = '0';
+    }
+</script>
+
+</body>
+</html>
